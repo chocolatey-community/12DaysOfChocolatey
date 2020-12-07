@@ -8,7 +8,7 @@ This repository contains all of the sample code that you saw during the demos pr
 
 ## Quick Tips
 
-### Create a Chocolatey package from all installers in folder
+### Create a Chocolatey package from all installers in the same folder
 
 ```powershell
 Get-ChildItem . -Recurse -Include *.msi,*.exe |
@@ -17,11 +17,11 @@ Get-ChildItem . -Recurse -Include *.msi,*.exe |
     }
 ```
 
-### Push all newly-created packages up to repository
+### Push all newly-created packages up to repository (replace `chocoserver` with your repo)
 
 ```powershell
-Get-ChildItem C:\packages -Recurse -Include *.nupkg |
+Get-ChildItem . -Recurse -Include *.nupkg |
     ForEach-Object {
-        choco push $_.FullName -s https://chocoserver.ch0.co:8443/repository/ChocolateyInternal/
+        choco push $_.FullName -s https://chocoserver:8443/repository/ChocolateyInternal/
     }
 ```
