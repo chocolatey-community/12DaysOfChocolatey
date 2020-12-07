@@ -62,7 +62,7 @@ start-process .\certmgr.exe -ArgumentList '-add -c certificates\vs_installer_opc
         Wait = $true
         NoNewWindow = $true
     }
-) | ForEach-Object { & .\certmgr.exe @$_}
+) | ForEach-Object { Start-Process .\certmgr.exe @$_}
 
 #All that, and we can _finally_ install Visual Studio
 $installerArgs = @{
