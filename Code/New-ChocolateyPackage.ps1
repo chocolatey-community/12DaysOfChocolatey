@@ -30,7 +30,7 @@ function New-ChocolateyPackage {
     #>
     [cmdletBinding(DefaultParameterSetname="file")]
     Param(
-        [Parameter(ParameterSetName="File",Mandatory)]
+        [Parameter(ParameterSetName="file",Mandatory)]
         [String[]]
         $File,
 
@@ -40,6 +40,7 @@ function New-ChocolateyPackage {
 
         [Parameter(ParameterSetName="file",Mandatory)]
         [Parameter(ParameterSetName="url",Mandatory)]
+        [Parameter(Mandatory)]
         [String]
         $OutputDirectory
     )
