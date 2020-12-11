@@ -1,0 +1,52 @@
+---
+- name: Reset lab
+  hosts: windows
+  gather_facts: false
+
+  collections:
+    - chocolatey.chocolatey 
+
+  vars: 
+    choco_packages:
+      - name: 7zip
+      - name: nodejs
+      - name: chocolatey-agent
+      - name: chocolateygui
+
+    choco_features:
+       - name: useBackgroundService
+       - name: useBackgroundServiceWithNonAdministratorsOnly
+       - name: allowBackgroundServiceUninstallsFromUserInstallsOnly
+  
+  tasks: 
+
+   - name: Add the default public source
+     chocolatey.chocolatey.win_chocolatey_source:
+       name: chocolatey
+       state: present
+       source: https://chocolatey.org/api/v2/
+
+   - name: Remove new internal source
+     chocolatey.chocolatey.win_chocolatey_source:
+        name: ChocolateyInternal
+        state: absent
+        source: https://chocoserver.ch0.co:8443/repository/ChocolateyInternal/
+
+   - name: Remove choco packages
+     chocolatey.chocolatey.win_chocolatey:
+        name: "{{ item.name }}"
+        state: absent
+     loop: "{{ choco_packages }}"
+
+   - name: Remove features for self-service
+     chocolatey.chocolatey.win_chocolatey_feature:
+        name: "{{ item.name }}"
+        state: disabled
+     loop: "{{ choco_features }}"
+
+   - name: Reset chocolatey cache location
+     chocolatey.chocolatey.win_chocolatey_config:
+       name: cacheLocation
+       state: absent
+       value: c:\ProgramData\chocolatey\choco-cache
+

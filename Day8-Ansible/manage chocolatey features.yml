@@ -1,0 +1,42 @@
+---
+- name: Update Chocolatey Features for Self-Service
+  hosts: windows
+  gather_facts: false
+
+  collections:
+    - chocolatey.chocolatey 
+  
+  vars: 
+    choco_packages:
+      - name: chocolatey-agent
+      - name: chocolateygui
+    
+    choco_features:
+       - name: useBackgroundService
+       - name: useBackgroundServiceWithNonAdministratorsOnly
+       - name: allowBackgroundServiceUninstallsFromUserInstallsOnly
+
+    
+  tasks:
+
+    - name: Install choco packages
+      chocolatey.chocolatey.win_chocolatey:
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ choco_packages }}"
+
+    - name: Configure features for self-service
+      chocolatey.chocolatey.win_chocolatey_feature:
+        name: "{{ item.name }}"
+        state: enabled
+      loop: "{{ choco_features }}"
+
+    - name: Retrieve chocolatey facts
+      chocolatey.chocolatey.win_chocolatey_facts:
+      register: config
+    
+    - name: Displays the facts from chocolatey
+      debug:
+        msg: "{{ config }}"
+
+      

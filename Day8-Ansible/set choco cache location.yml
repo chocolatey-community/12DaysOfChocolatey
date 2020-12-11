@@ -1,0 +1,15 @@
+---
+- name: Update Chocolatey Config to set the cache location
+  hosts: windows
+  gather_facts: false
+
+  collections:
+    - chocolatey.chocolatey 
+
+  tasks:
+
+   - name: Set chocolatey cache location
+     chocolatey.chocolatey.win_chocolatey_config:
+       name: cacheLocation
+       state: present
+       value: c:\ProgramData\chocolatey\choco-cache

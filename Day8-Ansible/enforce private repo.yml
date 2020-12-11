@@ -1,0 +1,27 @@
+---
+- name: Enforce private choco repo
+  hosts: windows
+  gather_facts: false
+
+  collections:
+    - chocolatey.chocolatey 
+  
+  tasks: 
+
+   - name: Remove the default public source
+     chocolatey.chocolatey.win_chocolatey_source:
+       name: chocolatey
+       state: absent
+
+   - name: Add new internal source
+     chocolatey.chocolatey.win_chocolatey_source:
+        name: ChocolateyInternal
+        state: present
+        source: https://chocoserver.ch0.co:8443/repository/ChocolateyInternal/
+
+   - name: Gather facts from chocolatey
+     chocolatey.chocolatey.win_chocolatey_facts:
+
+   - name: Displays the configured chocolatey sources
+     debug:
+       var: ansible_chocolatey.sources

@@ -1,0 +1,17 @@
+---
+- name: Install packages using Chocolatey and Ansible Tower
+  hosts: windows
+  gather_facts: false
+  
+  collections:
+    - chocolatey.chocolatey 
+  
+
+  tasks:
+
+    - name: Install chocolatey packages
+      chocolatey.chocolatey.win_chocolatey:
+        name: "{{ item }}"
+      loop: "{{ choco_packages }}"
+
+  
