@@ -1,0 +1,21 @@
+---
+- name: Install chocolatey packages from Tower Survey
+  hosts: windows
+  gather_facts: false
+
+  collections:
+    - chocolatey.chocolatey 
+ 
+  
+  tasks:
+
+    - name: Install chocolatey packages from Tower Survey
+      chocolatey.chocolatey.win_chocolatey:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ choco_packages }}"
+ 
+
+    
+
+    
